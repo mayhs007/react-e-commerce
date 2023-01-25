@@ -1,25 +1,3 @@
-table,
-th,
-td {
-  border: 1px solid black;
-}
-
-table {
-  border-collapse: collapse;
-  width: 750px;
-}
-
-.main-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 5%;
-}
-
-.error-container {
-  color: red;
+body {
+  background-color: #f2f2f2;
 }
