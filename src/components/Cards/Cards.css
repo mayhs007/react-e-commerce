@@ -1,5 +1,9 @@
 .cards-container {
      display: flex;
+     flex-wrap: wrap;
+     margin-top: 5%;
+     height: 87.5%;
+     width: 100%;
 }
 
 .card-container {
@@ -10,12 +14,22 @@
      border-radius: 5%;
      background-color: #fff;
      margin: 1%;
+
+     box-shadow: 0 0 2rem 0 rgb(33 37 41 / 10%);
 }
 
 .image-container {
      height: 80%;
      width: 100%;
+     position: relative;
 
+}
+
+.icon-container {
+     position: absolute;
+     top: 5%;
+     left: 88%;
+     cursor: pointer;
 }
 
 .image-container img {
@@ -24,8 +38,12 @@
      border-top-right-radius: 5%;
 }
 
-.bottom-container {
+.detail-container {
      display: flex;
      justify-content: space-between;
      margin: 0% 2%;
+}
+
+.button-container {
+     margin: 0% 2%
 }

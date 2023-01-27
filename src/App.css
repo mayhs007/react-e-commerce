@@ -1,3 +1,16 @@
 body {
-  background-color: #f2f2f2;
+  background-color: #f2f2f2 !important;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  width: 99vw;
+  height: 100vh;
+}
+
+.button-primary {
+  background-color: #21ba45;
+  color: #fff;
+  border: none;
 }
