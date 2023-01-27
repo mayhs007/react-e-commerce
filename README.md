@@ -9,7 +9,7 @@ https://github.com/mayhs007/react-e-commerce/tree/9d76df5aab795d1e97573e0b0db627
 ### Props
 
 Design for Props concept
-[!alt Props Design Image][https://github.com/mayhs007/react-e-commerce/blob/main/public/design/props.jpg]
+[!alt Props Design Image](https://github.com/mayhs007/react-e-commerce/blob/main/public/design/props.jpg)
 
 Example for Props concept
 
