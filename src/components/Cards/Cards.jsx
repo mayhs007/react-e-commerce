@@ -1,38 +1,33 @@
-import { Icon } from "semantic-ui-react"
+import { Icon, Card, Image, Button } from "semantic-ui-react"
 
 import "./Cards.css"
 const Cards = Props => {
   const renderFruits = () => {
     let renderedFruits = Props.list.map((value, index) => {
       return (
-        <div className="card-container">
-          <div className="image-container">
-            <div className="icon-container" onClick={() => Props.setLike(index)}>
-              <Icon
-                name={value.like ? "heart" : "heart outline"}
-                color={value.like ? "red" : ""}
-              ></Icon>
+        <Card>
+          <Image src={value.image} wrapped ui={false} />
+          <Card.Content>
+            <Card.Header>{value.name}</Card.Header>
+            <Card.Description>{value.price}</Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            <div className="ui one buttons">
+              <Button
+                basic={value.quantity === 0}
+                color="green"
+                onClick={() => {
+                  if (value.quantity === 0) Props.addItemToCart(index)
+                }}
+              >
+                {value.quantity > 0 ? "Added" : "Add to cart"}
+              </Button>
             </div>
-            <img src={value.image} alt={"image-of-" + value.name}></img>
-          </div>
-          <div className="detail-container">
-            <div className="name-container">{value.name}</div>
-            <div className="price-container">{value.price}</div>
-          </div>
-          <div className="button-container">
-            <button
-              onClick={() => {
-                Props.addItemToCart(index)
-              }}
-              className="button-primary"
-            >
-              <Icon name="shopping cart" color="black"></Icon>
-            </button>
-          </div>
-        </div>
+          </Card.Content>
+        </Card>
       )
     })
-    return <div className="cards-container">{renderedFruits}</div>
+    return <Card.Group itemsPerRow={"4"}>{renderedFruits}</Card.Group>
   }
   return <>{renderFruits()}</>
 }

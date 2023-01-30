@@ -1,12 +1,18 @@
 import React from "react"
-import { Icon } from "semantic-ui-react"
+import { Icon, Label, Menu } from "semantic-ui-react"
 import "./NavBar.css"
 const NavBar = Props => {
   return (
-    <div className="nav-container">
-      <Icon name="shopping cart" className="shopping-cart-icon"></Icon>
-      {Props.carts.length}
-    </div>
+    <Menu fixed="top" size={"tiny"}>
+      <Menu.Menu position="right">
+        <Menu.Item>
+          <Icon name="shopping cart" className="shopping-cart-icon" size={"large"}></Icon>
+          <Label circular>
+            <span style={{ fontSize: "10px" }}>{Props.carts.length}</span>
+          </Label>
+        </Menu.Item>
+      </Menu.Menu>
+    </Menu>
   )
 }
 export default NavBar
