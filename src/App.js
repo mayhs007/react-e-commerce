@@ -4,6 +4,7 @@ import Cards from "./components/Cards/Cards"
 import "semantic-ui-css/semantic.min.css"
 import { useReducer } from "react"
 import { Grid } from "semantic-ui-react"
+import Login from "./components/Login/Login"
 const initalState = {
   fruitObjects: [
     {
@@ -128,25 +129,26 @@ const reducer = (state, action) => {
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initalState)
   return (
-    <Grid>
-      <Grid.Row>
-        <Grid.Column>
-          <NavBar carts={state.carts}></NavBar>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row></Grid.Row>
-      <Grid.Row></Grid.Row>
-      <Grid.Row>
-        <Grid.Column>
-          <Cards
-            list={state.fruitObjects}
-            addItemToCart={listIndex => {
-              dispatch({ type: "ADD_TO_CART", value: listIndex })
-            }}
-          ></Cards>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+    <Login></Login>
+    // <Grid>
+    //   <Grid.Row>
+    //     <Grid.Column>
+    //       <NavBar carts={state.carts}></NavBar>
+    //     </Grid.Column>
+    //   </Grid.Row>
+    //   <Grid.Row></Grid.Row>
+    //   <Grid.Row></Grid.Row>
+    //   <Grid.Row>
+    //     <Grid.Column>
+    //       <Cards
+    //         list={state.fruitObjects}
+    //         addItemToCart={listIndex => {
+    //           dispatch({ type: "ADD_TO_CART", value: listIndex })
+    //         }}
+    //       ></Cards>
+    //     </Grid.Column>
+    //   </Grid.Row>
+    // </Grid>
   )
 }
 export default App
