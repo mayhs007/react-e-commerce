@@ -27,7 +27,7 @@ const Cards = Props => {
         </Card>
       )
     })
-    return <Card.Group itemsPerRow={"4"}>{renderedFruits}</Card.Group>
+    return <Card.Group itemsPerRow={"5"}>{renderedFruits}</Card.Group>
   }
   return <>{renderFruits()}</>
 }
