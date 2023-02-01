@@ -6,6 +6,9 @@ import { useContext, useEffect, useReducer } from "react"
 import { Grid } from "semantic-ui-react"
 import Login from "./components/Login/Login"
 import ThemeContext from "./context/ThemeContext"
+import { Route, Routes } from "react-router-dom"
+import { PrivateRoute } from "./Route/PrivateRoute"
+// import PrivateRoute from "./Route/PrivateRoute"
 const initalState = {
   fruitObjects: [],
   carts: [],
@@ -151,10 +154,8 @@ const App = () => {
       ],
     })
   }, 2000)
-
-  return (
-    <ThemeContext.Provider value={state.isDarkTheme}>
-      {/* <Login></Login> */}
+  const renderShop = () => {
+    return (
       <Grid
         style={
           state.isDarkTheme
@@ -185,6 +186,14 @@ const App = () => {
           </Grid.Column>
         </Grid.Row>
       </Grid>
+    )
+  }
+  return (
+    <ThemeContext.Provider value={state.isDarkTheme}>
+      <Routes>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/shop" element={<PrivateRoute>{renderShop()}</PrivateRoute>}></Route>
+      </Routes>
     </ThemeContext.Provider>
   )
 }

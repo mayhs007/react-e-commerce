@@ -1,4 +1,7 @@
+import Cookies from "js-cookie"
+import { useEffect } from "react"
 import { useReducer } from "react"
+import { useNavigate } from "react-router-dom"
 
 import {
   Button,
@@ -10,13 +13,14 @@ import {
   Form,
   Message,
   Input,
+  Loader,
 } from "semantic-ui-react"
 
 const initalState = {
-  phoneNumber: "",
+  phoneNumber: "7010534782",
   isPhoneNumberError: false,
 
-  password: "",
+  password: "123",
   isPasswordError: false,
 
   showPassword: false,
@@ -65,6 +69,7 @@ const reducer = (state, action) => {
 const Login = () => {
   let defaultPassword = "123"
   const [state, dispatch] = useReducer(reducer, initalState)
+  const navigate = useNavigate()
   const isValidPhoneNumber = phoneNumber => {
     let pattern = /^[0-9]{10}$/gm
     let regex = new RegExp(pattern)
@@ -81,18 +86,43 @@ const Login = () => {
     }
   }
   const authenticateUser = () => {
+    let isPhoneNumberError = false
+    let isPasswordError = false
     if (isValidPhoneNumber(state.phoneNumber)) {
+      isPhoneNumberError = false
       dispatch({ type: "SET_PHONE_ERROR", value: false })
     } else {
+      isPhoneNumberError = true
       dispatch({ type: "SET_PHONE_ERROR", value: true })
     }
     if (isValidPassword(state.password)) {
+      isPasswordError = false
       dispatch({ type: "SET_PASSWORD_ERROR", value: false })
     } else {
       dispatch({ type: "SET_PASSWORD_ERROR", value: true })
+      isPasswordError = true
+    }
+    if (isPasswordError === false && isPhoneNumberError === false) {
+      if (defaultPassword === state.password) {
+        navigate("/shop")
+        Cookies.set("isLoggedIn", true, { expires: 7 })
+      }
     }
   }
-  console.log(state)
+  if (Cookies.get("isLoggedIn")) {
+    navigate("/shop")
+    return (
+      <Grid style={{ height: "99vh" }}>
+        <Grid.Row centered>
+          <Grid.Column width={16} textAlign="center" verticalAlign="middle">
+            <Loader active inline>
+              Loading
+            </Loader>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    )
+  }
   return (
     <Grid>
       <Grid.Row centered>

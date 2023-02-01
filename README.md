@@ -1,5 +1,10 @@
 # E-Commerce
 
+### Install
+
+`npm install semantic-ui-react semantic-ui-css`
+`npm install react-router-dom`
+
 ### State Variable
 
 Example for State Variable
