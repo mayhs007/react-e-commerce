@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useState } from "react"
 import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import { Icon, Card, Image, Button, Placeholder, Loader } from "semantic-ui-react"
 import ThemeContext from "../../context/ThemeContext"
 
@@ -8,6 +9,7 @@ import "./Cards.css"
 const Cards = Props => {
   const [isLoading, setLoading] = useState(false)
   const isDarkTheme = useContext(ThemeContext)
+  const navigate = useNavigate()
   useEffect(() => {
     if (Props.list.length > 0) {
       setLoading(false)
@@ -22,7 +24,14 @@ const Cards = Props => {
       renderedFruits = Props.list.map((value, index) => {
         return (
           <Card color={isDarkTheme ? "black" : "default"} key={index}>
-            <Image src={value.image} wrapped ui={false} />
+            <Image
+              src={value.image}
+              wrapped
+              ui={false}
+              onClick={() => {
+                navigate("/detail/" + index)
+              }}
+            />
             <Card.Content>
               <Card.Header>{value.name}</Card.Header>
               <Card.Description>{value.price}</Card.Description>

@@ -1,5 +1,6 @@
 import Cookies from "js-cookie"
 import { useEffect } from "react"
+import { useState } from "react"
 import { useReducer } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -14,6 +15,7 @@ import {
   Message,
   Input,
   Loader,
+  GridColumn,
 } from "semantic-ui-react"
 
 const initalState = {
@@ -69,6 +71,7 @@ const reducer = (state, action) => {
 const Login = () => {
   let defaultPassword = "123"
   const [state, dispatch] = useReducer(reducer, initalState)
+  const [count, setCount] = useState(0)
   const navigate = useNavigate()
   const isValidPhoneNumber = phoneNumber => {
     let pattern = /^[0-9]{10}$/gm
@@ -110,18 +113,18 @@ const Login = () => {
     }
   }
   if (Cookies.get("isLoggedIn")) {
-    navigate("/shop")
-    return (
-      <Grid style={{ height: "99vh" }}>
-        <Grid.Row centered>
-          <Grid.Column width={16} textAlign="center" verticalAlign="middle">
-            <Loader active inline>
-              Loading
-            </Loader>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    )
+    //   navigate("/shop")
+    //   return (
+    //     <Grid style={{ height: "99vh" }}>
+    //       <Grid.Row centered>
+    //         <Grid.Column width={16} textAlign="center" verticalAlign="middle">
+    //           <Loader active inline>
+    //             Loading
+    //           </Loader>
+    //         </Grid.Column>
+    //       </Grid.Row>
+    //     </Grid>
+    //   )
   }
   return (
     <Grid>
