@@ -53,11 +53,15 @@ const reducer = (state, action) => {
 }
 const Users = () => {
   const [state, dispatch] = useReducer(reducer, initalState)
+  const API_URL =
+    process.env.REACT_APP_API_PROTOCOL +
+    process.env.REACT_APP_API_HOST +
+    process.env.REACT_APP_API_ENDPOINT
 
   const getUsers = async () => {
     dispatch({ type: "SET_IS_LOADING", value: true })
     const response = await fetch(
-      "https://reqres.in/api/users?page=" + state.page + "&per_page=" + state.limit
+      API_URL + "/users?page=" + state.page + "&per_page=" + state.limit
     )
     const data = await response.json()
     if (data && data.data && data.data.length > 0) {
@@ -81,7 +85,7 @@ const Users = () => {
       )
     } else if (state.users.length > 0) {
       return state.users.map(user => (
-        <Item>
+        <Item key={user.id}>
           <Item.Image src={user.avatar} size="tiny" avatar></Item.Image>
           <Item.Content>
             <Item.Header>
@@ -111,6 +115,7 @@ const Users = () => {
               className="button icon"
               floating
               options={options}
+              trigger={<></>}
               value={state.limit}
               onChange={(e, { value }) => {
                 dispatch({ type: "SET_PAGE", value: 1 })
