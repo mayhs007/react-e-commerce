@@ -12,6 +12,7 @@ import { NotFound } from "./components/NotFound/NotFound"
 import Detail from "./components/Detail/Detail"
 import Cart from "./components/Cart/Cart"
 import Checkout from "./components/Checkout/Checkout"
+import Users from "./components/Users/Users"
 // import PrivateRoute from "./Route/PrivateRoute"
 const initalState = {
   fruitObjects: [],
@@ -206,7 +207,6 @@ const App = () => {
     )
   }
   const renderDetail = () => {
-    console.log(state.fruitObjects)
     return (
       <Grid
         style={
@@ -301,6 +301,31 @@ const App = () => {
       </Grid>
     )
   }
+  const renderUsers = () => {
+    return (
+      <Grid
+        style={
+          state.isDarkTheme
+            ? { backgroundColor: "#282C34" }
+            : { backgroundColor: "#f2f2f2" }
+        }
+      >
+        <Grid.Row>
+          <Grid.Column>
+            <NavBar
+              carts={state.carts}
+              toggleDarkTheme={() => {
+                dispatch({ type: "TOGGLE_DARK_THEME", value: !state.isDarkTheme })
+              }}
+            ></NavBar>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row></Grid.Row>
+        <Grid.Row></Grid.Row>
+        <Users></Users>
+      </Grid>
+    )
+  }
   return (
     <ThemeContext.Provider value={state.isDarkTheme}>
       <Routes>
@@ -315,6 +340,7 @@ const App = () => {
           path="/check-out"
           element={<PrivateRoute>{renderCheckout()}</PrivateRoute>}
         ></Route>
+        <Route path="/users" element={renderUsers()}></Route>
         <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
     </ThemeContext.Provider>
