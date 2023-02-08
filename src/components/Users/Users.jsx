@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from "react"
+import { useSearchParams } from "react-router-dom"
 import {
   Grid,
   Segment,
@@ -53,6 +54,7 @@ const reducer = (state, action) => {
 }
 const Users = () => {
   const [state, dispatch] = useReducer(reducer, initalState)
+
   const API_URL =
     process.env.REACT_APP_API_PROTOCOL +
     process.env.REACT_APP_API_HOST +
@@ -72,9 +74,27 @@ const Users = () => {
     dispatch({ type: "SET_TOTAL", value: data.total_pages })
     dispatch({ type: "SET_IS_LOADING", value: false })
   }
+  const [searchParams, setSearchParams] = useSearchParams()
+
   useEffect(() => {
     getUsers()
+    setSearchParams({ page: state.page, limit: state.limit })
   }, [state.page, state.limit])
+
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...searchParams])
+    // [page, 1], [limit, 2],
+    console.log(currentParams.page)
+    setSearchParams({
+      page: currentParams.page ? currentParams.page : 1,
+      limit: currentParams.limit ? currentParams.limit : 5,
+    })
+    dispatch({
+      type: "SET_PAGE",
+      value: currentParams.page ? currentParams.page : 1,
+    })
+    dispatch({ type: "SET_LIMIT", value: currentParams.limit ? currentParams.limit : 5 })
+  }, [searchParams])
 
   const renderUserItem = () => {
     if (state.isLoading) {
@@ -140,6 +160,8 @@ const Users = () => {
             totalPages={state.totalPages}
             onPageChange={(e, { activePage }) => {
               dispatch({ type: "SET_PAGE", value: activePage })
+              // searchParams.set("page", activePage)
+              // setSearchParams(searchParams)
             }}
           ></Pagination>
         </Grid.Column>
