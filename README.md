@@ -12,6 +12,7 @@
         4. useNavigate()
         5. useEffect()
         6. useSearchParams()
+        7. useMemo()
 
     2.  Props handling
 

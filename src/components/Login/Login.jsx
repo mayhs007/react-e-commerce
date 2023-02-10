@@ -1,5 +1,5 @@
 import Cookies from "js-cookie"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useState } from "react"
 import { useReducer } from "react"
 import { useNavigate } from "react-router-dom"
@@ -85,6 +85,16 @@ const Login = () => {
   const [state, dispatch] = useReducer(reducer, initalState)
   const [count, setCount] = useState(0)
   const navigate = useNavigate()
+  const expensiveCalculation = num => {
+    for (let i = 0; i < 100000000; i++) {
+      num += 1
+    }
+    return num
+  }
+  // const calculation = expensiveCalculation(count)
+  const calculation = useMemo(() => expensiveCalculation(count), [count])
+  console.log(calculation)
+
   const isValidemail = email => {
     let pattern = /[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+?\.[a-zA-z]{2,3}/gm
     let regex = new RegExp(pattern)
@@ -243,6 +253,18 @@ const Login = () => {
                 <Grid.Column width={"4"}>
                   <Button fluid onClick={authenticateUser}>
                     Login
+                  </Button>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row centered>
+                <Grid.Column width={"4"}>
+                  <Button
+                    fluid
+                    onClick={() => {
+                      setCount(count + 1)
+                    }}
+                  >
+                    Add
                   </Button>
                 </Grid.Column>
               </Grid.Row>
