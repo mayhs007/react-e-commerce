@@ -19,20 +19,21 @@ import {
 } from "semantic-ui-react"
 
 const initalState = {
-  phoneNumber: "7010534782",
-  isPhoneNumberError: false,
+  email: "eve.holt@reqres.in",
+  isEmailError: false,
 
   password: "123",
   isPasswordError: false,
 
   showPassword: false,
+  error: "",
 }
 const reducer = (state, action) => {
   switch (action.type) {
-    case "SET_PHONE_NUMBER": {
+    case "SET_EMAIL": {
       state = {
         ...state,
-        phoneNumber: action.value,
+        email: action.value,
       }
       return state
     }
@@ -50,10 +51,10 @@ const reducer = (state, action) => {
       }
       return state
     }
-    case "SET_PHONE_ERROR": {
+    case "SET_EMAIL_ERROR": {
       state = {
         ...state,
-        isPhoneNumberError: action.value,
+        isEmailError: action.value,
       }
       return state
     }
@@ -64,19 +65,30 @@ const reducer = (state, action) => {
       }
       return state
     }
+    case "SET_ERROR": {
+      state = {
+        ...state,
+        error: action.value,
+      }
+      return state
+    }
     default:
       return state
   }
 }
 const Login = () => {
+  const API_URL =
+    process.env.REACT_APP_API_PROTOCOL +
+    process.env.REACT_APP_API_HOST +
+    process.env.REACT_APP_API_ENDPOINT
   let defaultPassword = "123"
   const [state, dispatch] = useReducer(reducer, initalState)
   const [count, setCount] = useState(0)
   const navigate = useNavigate()
-  const isValidPhoneNumber = phoneNumber => {
-    let pattern = /^[0-9]{10}$/gm
+  const isValidemail = email => {
+    let pattern = /[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+?\.[a-zA-z]{2,3}/gm
     let regex = new RegExp(pattern)
-    if (regex.test(phoneNumber)) {
+    if (regex.test(email)) {
       return true
     }
     return false
@@ -89,14 +101,15 @@ const Login = () => {
     }
   }
   const authenticateUser = () => {
-    let isPhoneNumberError = false
+    let isEmailError = false
     let isPasswordError = false
-    if (isValidPhoneNumber(state.phoneNumber)) {
-      isPhoneNumberError = false
-      dispatch({ type: "SET_PHONE_ERROR", value: false })
+
+    if (isValidemail(state.email)) {
+      isEmailError = false
+      dispatch({ type: "SET_EMAIL_ERROR", value: false })
     } else {
-      isPhoneNumberError = true
-      dispatch({ type: "SET_PHONE_ERROR", value: true })
+      isEmailError = true
+      dispatch({ type: "SET_EMAIL_ERROR", value: true })
     }
     if (isValidPassword(state.password)) {
       isPasswordError = false
@@ -105,11 +118,25 @@ const Login = () => {
       dispatch({ type: "SET_PASSWORD_ERROR", value: true })
       isPasswordError = true
     }
-    if (isPasswordError === false && isPhoneNumberError === false) {
-      if (defaultPassword === state.password) {
-        navigate("/shop")
-        Cookies.set("isLoggedIn", true, { expires: 7 })
-      }
+    if (isPasswordError === false && isEmailError === false) {
+      makeAPICall()
+    }
+  }
+  const makeAPICall = async () => {
+    const requestBody = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: state.email, password: state.password }),
+    }
+    const response = await fetch(API_URL + "/login", requestBody)
+    const data = await response.json()
+    if (data && data.token) {
+      Cookies.set("isLoggedIn", true, { expires: 7 })
+    } else if (data.error) {
+      dispatch({ type: "SET_ERROR", value: data.error })
     }
   }
   if (Cookies.get("isLoggedIn")) {
@@ -142,16 +169,16 @@ const Login = () => {
                   <Form.Input
                     fluid
                     type="text"
-                    value={state.phoneNumber}
+                    value={state.email}
                     iconPosition="left"
-                    icon={"mobile alternate"}
-                    placeholder="Enter your number"
+                    icon={"mail outline"}
+                    placeholder="Enter your email"
                     onChange={event => {
-                      dispatch({ type: "SET_PHONE_NUMBER", value: event.target.value })
+                      dispatch({ type: "SET_EMAIL", value: event.target.value })
                     }}
                     required
                     error={
-                      state.isPhoneNumberError
+                      state.isEmailError
                         ? {
                             content: "Please enter valid phone number",
                             pointing: "above",
@@ -190,14 +217,23 @@ const Login = () => {
                         value: event.target.value,
                       })
                     }}
-                    required
+                    // required
                   ></Input>
                 </Grid.Column>
               </Grid.Row>
-              {state.isPasswordError ? (
+              {/* {state.isPasswordError ? (
                 <Grid.Row>
                   <Grid.Column>
                     <Message negative content="Please enter valid password" />
+                  </Grid.Column>
+                </Grid.Row>
+              ) : (
+                ""
+              )} */}
+              {state.error ? (
+                <Grid.Row>
+                  <Grid.Column>
+                    <Message negative content={state.error} />
                   </Grid.Column>
                 </Grid.Row>
               ) : (
